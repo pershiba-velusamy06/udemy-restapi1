@@ -66,8 +66,13 @@ mongoose
   .connect(MONGODB_URI)
   .then(result => {
     console.log('connected mongo db')
-    app.listen(8080,()=>{
+    const server = app.listen(8080,()=>{
       console.log(`node server is started in port 8080`)
+    });
+
+    const io = require('./socket').init(server);
+    io.on('connection', socket => {
+      console.log('Client connected');
     });
   })
   .catch(err => {
